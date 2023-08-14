@@ -1,4 +1,4 @@
-package com.example.demo.post;
+package com.vodafone.learningHub.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
