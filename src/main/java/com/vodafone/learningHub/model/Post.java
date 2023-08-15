@@ -1,14 +1,11 @@
 package com.vodafone.learningHub.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 @Table(name = "post")
 public class Post {
     @Id
