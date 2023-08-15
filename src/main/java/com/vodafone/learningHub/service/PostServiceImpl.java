@@ -13,7 +13,7 @@ public class PostServiceImpl implements PostServiceI{
 
     @Override
     public Post createPost(Post post) {
-        
+
         return null;
     }
 }
