@@ -1,12 +1,12 @@
 package com.vodafone.learningHub.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name="user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private int userId;
     @Column(name="email")
@@ -25,8 +26,10 @@ public class User {
     private String firstName;
     @Column(name="last_name")
     private String lastName;
-    @Column(name="region")
-    private String role;
-
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "region_id", referencedColumnName = "region_id")
+    private Region region;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private Role role;
 }
