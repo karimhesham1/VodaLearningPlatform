@@ -2,9 +2,6 @@ openapi: 3.0.3
 info:
   title: Training hub
   description: |-
-  
-  
-
   version: 1.0.11
 
 tags:
@@ -19,18 +16,11 @@ paths:
       description: upload a post as a user
       operationId: UploadPost
       requestBody:
-
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PostRequest'
-
-
-
-
-
-
 
       responses:
         '201':
@@ -39,10 +29,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostResponse'
-
-
-
-
         '400':
           description: Bad response
           content:
@@ -54,27 +40,20 @@ paths:
                     type: string
                     example : Invalid
 
-
 components:
   schemas:
     PostRequest :
-
-
       type: object
       properties:
-
         rating:
           type: integer
-
-
-
+          example: 4
         title:
           type: string
-          example : Springboot
-
+          example : "Spring boot"
         description:
           type: string
-          example: important in backend team
+          example: "important in backend team"
         tag:
           type: array
           items:
@@ -85,7 +64,6 @@ components:
         User:
           $ref: '#/components/schemas/UserResponse'
 
-
     PostResponse :
       type: object
       properties:
@@ -93,13 +71,9 @@ components:
           type: string
         rating:
           type: integer
-
-
-
         title:
           type: string
           example : Springboot
-
         description:
           type: string
           example: important in backend team
@@ -114,16 +88,12 @@ components:
           $ref: '#/components/schemas/UserResponse'
 
     Attachment:
-
       type: object
       properties :
-        attachmentId:
-          type: integer
         attachment:
           type: string
 
     UserResponse:
-
       type: object
       properties :
         UserId:
@@ -134,3 +104,11 @@ components:
           type : string
         lastName:
           type : string
+        role:
+          $ref: "#/components/schemas/Role"
+
+    Role:
+      type: object
+      properties:
+        role:
+          type: string
