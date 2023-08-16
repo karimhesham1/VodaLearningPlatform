@@ -82,7 +82,7 @@
 
 							</inputSpec>
 							<generatorName>spring</generatorName>
-							<apiPackage>com.vodafone.learningHub.openapi</apiPackage>
+							<apiPackage>com.vodafone.learningHub.openapi.api</apiPackage>
 							<modelPackage>com.vodafone.learningHub.openapi.model</modelPackage>
 							<supportingFilesToGenerate>
 								ApiUtil.java
