@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
-public class PostController implements PostApi {
+public class PostController implements PostApi  {
 
     private final PostServiceI postServiceI;
 
@@ -23,13 +23,15 @@ public class PostController implements PostApi {
     @Override
     public ResponseEntity<PostResponse> uploadPost(PostRequest postRequest) {
         try {
-            postServiceI.createPost();
+            PostResponse post  = postServiceI.createPost(postRequest);
 //            ResponseEntity.crea
         } catch(IndexOutOfBoundsException | IllegalArgumentException ex) {
 
         } catch (RuntimeException ex) {
 
         }
+
+        return null;
     }
 
 
