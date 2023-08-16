@@ -2,85 +2,135 @@ openapi: 3.0.3
 info:
   title: Training hub
   description: |-
-    
- 
- 
+  
+  
+
   version: 1.0.11
 
 tags:
   - name:   Post
     description: |-
-  
-paths: 
+
+paths:
   /post:
     post:
-        tags:
-          - Post
-        description: upload a post as a user 
-        operationId: UploadPost
-        requestBody:
-          
-          required: true
+      tags:
+        - Post
+      description: upload a post as a user
+      operationId: UploadPost
+      requestBody:
+
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+
+
+
+
+
+
+
+      responses:
+        '201':
+          description: Created succesfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'    
-                
-                  
+                $ref: '#/components/schemas/PostResponse'
 
-                    
-                
-                  
 
-        responses:
-          '201':
-            description: Created succesfully
-            content:
-              application/json:
-                schema:
-                            
-              
 
-          '400':
-            description: Bad response 
-            content:
-              application/json:
-                schema:
-                  type: object 
-                  properties: 
-                    message : 
-                      type: string   
-                      example : Invalid 
 
-        security:
-          - petstore_auth:
-              - write:pets
-              - read:pets
+        '400':
+          description: Bad response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message :
+                    type: string
+                    example : Invalid
+
+
 components:
   schemas:
-    Post :
+    PostRequest :
+
+
       type: object
       properties:
-        
-          
-          
+
+        rating:
+          type: integer
+
+
+
         title:
-          type: string 
+          type: string
           example : Springboot
-            
+
         description:
-          type: string 
+          type: string
           example: important in backend team
-        tags:
+        tag:
           type: array
           items:
-            type: string 
+            type: string
           minItems: 1
-        content:
+        Attachment:
+          $ref: '#/components/schemas/Attachment'
+        User:
+          $ref: '#/components/schemas/UserResponse'
+
+
+    PostResponse :
+      type: object
+      properties:
+        userId :
+          type: string
+        rating:
+          type: integer
+
+
+
+        title:
+          type: string
+          example : Springboot
+
+        description:
+          type: string
+          example: important in backend team
+        tag:
           type: array
           items:
-            type: string 
-            name:
-      
-        
-        
+            type: string
+          minItems: 1
+        Attachment:
+          $ref: '#/components/schemas/Attachment'
+        User:
+          $ref: '#/components/schemas/UserResponse'
+
+    Attachment:
+
+      type: object
+      properties :
+        attachmentId:
+          type: integer
+        attachment:
+          type: string
+
+    UserResponse:
+
+      type: object
+      properties :
+        UserId:
+          type: integer
+        email :
+          type: string
+        firstName :
+          type : string
+        lastName:
+          type : string
