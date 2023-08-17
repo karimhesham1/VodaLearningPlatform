@@ -30,24 +30,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/PostResponse'
         '400':
-          description: Bad response
+          description: Bad request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message :
-                    type: string
-                    example : Invalid
+                $ref: '#/components/schemas/BadResponse'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadResponse'
 
 components:
   schemas:
     PostRequest :
       type: object
       properties:
-        rating:
-          type: integer
-          example: 4
         title:
           type: string
           example : "Spring boot"
@@ -111,4 +111,12 @@ components:
       type: object
       properties:
         role:
+          type: string
+
+    BadResponse:
+      type: object
+      properties:
+        StatusCode:
+          type: integer
+        message:
           type: string
