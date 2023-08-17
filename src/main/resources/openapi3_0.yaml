@@ -93,8 +93,3 @@ components:
 
 
 
-    Role:
-      type: object
-      properties:
-        role:
-          type: string
