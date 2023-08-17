@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 
@@ -25,15 +26,17 @@ public class PostController implements PostApi  {
 
 
     @Override
-    public ResponseEntity uploadPost(PostRequest postRequest) {
+    public ResponseEntity<PostResponse> uploadPost(PostRequest postRequest) {
         try {
             PostResponse postResponse  = postServiceI.createPost(postRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(postResponse);
 
         } catch(IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+//            return ResponseEntity.badRequest().body(ex.getMessage());
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
 
 
