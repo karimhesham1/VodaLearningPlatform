@@ -45,9 +45,6 @@ components:
     PostRequest :
       type: object
       properties:
-        rating:
-          type: integer
-          example: 4
         title:
           type: string
           example : "Spring boot"
@@ -59,15 +56,13 @@ components:
           items:
             type: string
           minItems: 1
-        Attachment:
+        attachment:
           $ref: '#/components/schemas/Attachment'
-        User:
-          $ref: '#/components/schemas/UserResponse'
 
     PostResponse :
       type: object
       properties:
-        userId :
+        postId :
           type: string
         rating:
           type: integer
@@ -82,10 +77,8 @@ components:
           items:
             type: string
           minItems: 1
-        Attachment:
+        attachment:
           $ref: '#/components/schemas/Attachment'
-        User:
-          $ref: '#/components/schemas/UserResponse'
 
     Attachment:
       type: object
@@ -93,22 +86,3 @@ components:
         attachment:
           type: string
 
-    UserResponse:
-      type: object
-      properties :
-        UserId:
-          type: integer
-        email :
-          type: string
-        firstName :
-          type : string
-        lastName:
-          type : string
-        role:
-          $ref: "#/components/schemas/Role"
-
-    Role:
-      type: object
-      properties:
-        role:
-          type: string
