@@ -45,6 +45,9 @@ components:
     PostRequest :
       type: object
       properties:
+        rating:
+          type: integer
+          example: 4
         title:
           type: string
           example : "Spring boot"
