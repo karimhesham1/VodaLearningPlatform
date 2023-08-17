@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "post")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
     private int postId;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -27,9 +27,8 @@ public class Post {
     private String description;
     @Column(name="rating")
     private int rating;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "attachment_id", referencedColumnName = "attachment_id")
-    private Attachment attachment;
+    @OneToMany(mappedBy = "post")
+    private Set<Attachment> attachment;
     @NotEmpty(message = "A post must have at least one tag")
     @ManyToMany
     @JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),

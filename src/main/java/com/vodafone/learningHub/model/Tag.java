@@ -7,7 +7,7 @@ import java.util.Set;
 @Table(name="tags")
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="tag_id")
     private int tagId;
     @Column(name="tag")
