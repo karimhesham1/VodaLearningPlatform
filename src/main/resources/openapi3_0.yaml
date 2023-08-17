@@ -61,8 +61,7 @@ components:
           minItems: 1
         Attachment:
           $ref: '#/components/schemas/Attachment'
-        User:
-          $ref: '#/components/schemas/UserResponse'
+
 
     PostResponse :
       type: object
@@ -84,8 +83,7 @@ components:
           minItems: 1
         Attachment:
           $ref: '#/components/schemas/Attachment'
-        User:
-          $ref: '#/components/schemas/UserResponse'
+
 
     Attachment:
       type: object
@@ -93,19 +91,7 @@ components:
         attachment:
           type: string
 
-    UserResponse:
-      type: object
-      properties :
-        UserId:
-          type: integer
-        email :
-          type: string
-        firstName :
-          type : string
-        lastName:
-          type : string
-        role:
-          $ref: "#/components/schemas/Role"
+
 
     Role:
       type: object
