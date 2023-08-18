@@ -1,8 +1,6 @@
 package com.vodafone.learningHub;
 
-import com.vodafone.learningHub.mapper.PostMapper;
 import com.vodafone.learningHub.model.Post;
-import com.vodafone.learningHub.model.Tag;
 import com.vodafone.learningHub.openapi.model.Attachment;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
@@ -10,23 +8,17 @@ import com.vodafone.learningHub.repository.PostRepository;
 import com.vodafone.learningHub.service.PostServiceI;
 import com.vodafone.learningHub.service.PostServiceImpl;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.naming.ServiceUnavailableException;
-import javax.validation.ValidationException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = LearningHubApplication.class)
@@ -35,6 +27,13 @@ class PostServiceTests {
     private PostServiceI underTest;
 
     private PostRepository postRepository;
+
+    @BeforeAll
+    public void setUp() {
+        postRepository = Mockito.mock(PostRepository.class);
+        underTest = new PostServiceImpl(postRepository);
+    }
+
     @Test
     void contextLoads(){
     }
@@ -213,7 +212,7 @@ class PostServiceTests {
     }
 
     @Test
-    void testCreatePost_FailureServiceUnavailable() throws ServiceUnavailableException {
+    void testCreatePost_FailureServiceUnavailable() {
         // Given
         PostRequest postRequest = new PostRequest();
         Attachment attachment = new Attachment();
