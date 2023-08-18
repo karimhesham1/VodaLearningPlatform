@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 openapi: 3.0.3
 info:
   title: Training hub
   description: |-
+    
+ 
+
   version: 1.0.11
 
 tags:
@@ -112,3 +116,91 @@ components:
       properties:
         role:
           type: string
+=======
+openapi: 3.0.3
+info:
+  title: Training hub
+  description: |-
+    
+ 
+
+  version: 1.0.11
+
+tags:
+  - name:   Post
+    description: |-
+
+paths:
+  /post:
+    post:
+        tags:
+          - Post
+        description: upload a post as a user
+        operationId: UploadPost
+        requestBody:
+
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+
+
+
+
+
+
+
+        responses:
+          '201':
+            description: Created succesfully
+            content:
+              application/json:
+                schema:
+
+
+
+          '400':
+            description: Bad response
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message :
+                      type: string
+                      example : Invalid
+
+        security:
+          - petstore_auth:
+              - write:pets
+              - read:pets
+components:
+  schemas:
+    Post :
+      type: object
+      properties:
+
+
+
+        title:
+          type: string
+          example : Springboot
+
+        description:
+          type: string
+          example: important in backend team
+        tags:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        content:
+          type: array
+          items:
+            type: string
+            name:
+
+
+
+>>>>>>> origin/feature/FT01-testing
