@@ -67,8 +67,8 @@ components:
     PostResponse :
       type: object
       properties:
-        userId :
-          type: string
+        postId :
+          type: integer
         rating:
           type: integer
         title:
@@ -96,7 +96,7 @@ components:
     UserResponse:
       type: object
       properties :
-        UserId:
+        userId:
           type: integer
         email :
           type: string

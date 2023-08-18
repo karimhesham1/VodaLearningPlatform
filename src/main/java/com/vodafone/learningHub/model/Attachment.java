@@ -15,8 +15,8 @@ public class Attachment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attachment_id")
     private int attachmentId;
+
     @Column(name = "attachment")
     private String attachment;
-
 
 }
