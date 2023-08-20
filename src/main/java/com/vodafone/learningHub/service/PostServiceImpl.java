@@ -19,9 +19,9 @@ public class PostServiceImpl implements PostServiceI{
     @Override
     public PostResponse createPost(PostRequest postRequest) {
         Post post = PostMapper.INSTANCE.postRequestToPost(postRequest);
-        if (post.getTags() == null || post.getTags().isEmpty()) {
-            throw new IllegalArgumentException("A post must have at least one tag");
-        }
+//        if (post.getTags() == null || post.getTags().isEmpty()) {
+//            throw new IllegalArgumentException("A post must have at least one tag");
+//        }
 
         if (post.getTitle() == null || post.getTitle().isEmpty()) {
             throw new IllegalArgumentException("A post must have a title");

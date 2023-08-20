@@ -14,7 +14,7 @@ paths:
       tags:
         - Post
       description: upload a post as a user
-      operationId: UploadPost
+      operationId: uploadPost
       requestBody:
         required: true
         content:
@@ -45,9 +45,6 @@ components:
     PostRequest :
       type: object
       properties:
-        rating:
-          type: integer
-          example: 4
         title:
           type: string
           example : "Spring boot"
@@ -57,18 +54,18 @@ components:
         tag:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/Tag'
           minItems: 1
         attachment:
-          $ref: '#/components/schemas/Attachment'
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
 
     PostResponse :
       type: object
       properties:
         postId :
           type: string
-        rating:
-          type: integer
         title:
           type: string
           example : Springboot
@@ -78,14 +75,22 @@ components:
         tag:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/Tag'
           minItems: 1
         attachment:
-          $ref: '#/components/schemas/Attachment'
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
 
     Attachment:
       type: object
       properties :
         attachment:
+          type: string
+
+    Tag:
+      type: object
+      properties :
+        tagName:
           type: string
 

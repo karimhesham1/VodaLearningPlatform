@@ -101,8 +101,8 @@
 							</supportingFilesToGenerate>
 							<configOptions>
 								<validateSpec>false</validateSpec>
-
-								<delegatePattern>true</delegatePattern>
+								<interfaceOnly>true</interfaceOnly>
+<!--								<delegatePattern>true</delegatePattern>-->
 							</configOptions>
 						</configuration>
 					</execution>

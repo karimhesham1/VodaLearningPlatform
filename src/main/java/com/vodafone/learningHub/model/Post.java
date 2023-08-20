@@ -33,7 +33,7 @@ public class Post {
     private int rating;
     @OneToMany(mappedBy = "post")
     private Set<Attachment> attachments;
-    @NotEmpty(message = "A post must have at least one tag")
+//    @NotEmpty(message = "A post must have at least one tag")
     @ManyToMany
     @JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tag_id"))
