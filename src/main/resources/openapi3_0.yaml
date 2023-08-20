@@ -55,7 +55,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-          minItems: 1
+#          minItems: 1
         attachment:
           type: array
           items:
@@ -76,7 +76,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-          minItems: 1
+#          minItems: 1
         attachment:
           type: array
           items:

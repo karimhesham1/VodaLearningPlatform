@@ -25,6 +25,9 @@ public interface PostMapper {
 
     @Named("tagSetToList")
     default List<com.vodafone.learningHub.openapi.model.Tag> tagSetToList(Set<Tag> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return new ArrayList<>();
+        }
 //        return tags.stream().map(tag -> new Tag().setTagName(tag.getName())).collect(Collectors.toList());
         List<com.vodafone.learningHub.openapi.model.Tag> tagList = new ArrayList<>();
         for (Tag tag : tags) {
