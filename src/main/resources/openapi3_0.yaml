@@ -59,14 +59,16 @@ components:
           items:
             type: string
           minItems: 1
-        attachment:
+        Attachment:
           $ref: '#/components/schemas/Attachment'
+        User:
+          $ref: '#/components/schemas/UserResponse'
 
     PostResponse :
       type: object
       properties:
         postId :
-          type: string
+          type: integer
         rating:
           type: integer
         title:
@@ -80,12 +82,34 @@ components:
           items:
             type: string
           minItems: 1
-        attachment:
+        Attachment:
           $ref: '#/components/schemas/Attachment'
+        User:
+          $ref: '#/components/schemas/UserResponse'
 
     Attachment:
       type: object
       properties :
         attachment:
+          type: string
+
+    UserResponse:
+      type: object
+      properties :
+        userId:
+          type: integer
+        email :
+          type: string
+        firstName :
+          type : string
+        lastName:
+          type : string
+        role:
+          $ref: "#/components/schemas/Role"
+
+    Role:
+      type: object
+      properties:
+        role:
           type: string
 
