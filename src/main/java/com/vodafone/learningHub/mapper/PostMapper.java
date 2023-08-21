@@ -38,6 +38,9 @@ public interface PostMapper {
 
     @Named("tagListToSet")
     default Set<Tag> tagListToSet(List<com.vodafone.learningHub.openapi.model.Tag> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return new HashSet<>();
+        }
         Set<Tag> tagSet = new HashSet<>();
         for (com.vodafone.learningHub.openapi.model.Tag tag : tags) {
             Tag newTag = new Tag();

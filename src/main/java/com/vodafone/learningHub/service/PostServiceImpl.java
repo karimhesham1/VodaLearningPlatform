@@ -24,9 +24,9 @@ public class PostServiceImpl implements PostServiceI{
     @Override
     public PostResponse createPost(PostRequest postRequest) {
         Post post = PostMapper.INSTANCE.postRequestToPost(postRequest);
-//        if (post.getTags() == null || post.getTags().isEmpty()) {
-//            throw new IllegalArgumentException("A post must have at least one tag");
-//        }
+        if (post.getTags() == null || post.getTags().isEmpty()) {
+            throw new IllegalArgumentException("A post must have at least one tag");
+        }
 //        tagServiceImp.deleteAllTags();
 //        Set<Tag> tags = new HashSet<>();
 //        for(Tag tag : post.getTags()) {
