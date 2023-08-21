@@ -39,6 +39,43 @@ paths:
                   message :
                     type: string
                     example : Invalid
+  /post/{postId}:
+    put:
+        tags:
+            - Post
+        description: update a post as a user
+        operationId: updatePost
+        parameters:
+            - name: postId
+              in: path
+              required: true
+              description: id of the post to be updated
+              schema:
+                type: string
+        requestBody:
+            required: true
+            content:
+            application/json:
+                schema:
+                $ref: '#/components/schemas/PostRequest'
+
+        responses:
+            '200':
+              description: Updated succesfully
+              content:
+                  application/json:
+                  schema:
+                      $ref: '#/components/schemas/PostResponse'
+            '400':
+              description: Bad response
+              content:
+                  application/json:
+                  schema:
+                      type: object
+                      properties:
+                      message :
+                          type: string
+                          example : Invalid
 
 components:
   schemas:
