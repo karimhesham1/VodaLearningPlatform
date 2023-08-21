@@ -19,7 +19,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="tag_id")
     private int tagId;
-    @Column(name="tag")
+    @Column(name="tag", unique = true)
     private String tag;
     @ManyToMany(mappedBy = "tags")
     private Set<Post> posts;
