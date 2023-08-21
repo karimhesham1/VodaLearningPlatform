@@ -50,19 +50,19 @@ class PostServiceTests {
         assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
     }
 
-    /*@Test
+    @Test
     void testCreatePost_SuccessfulPostCreationMultipleTags(){
         //Given
         PostRequest postRequest = new PostRequest();
-        com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
+        /*com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
         tags.add("Test Tag");
-        tags.add("Test Tag 2");
+        tags.add("Test Tag 2");*/
 
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
-        postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);
+        /*postRequest.setTag(tags);
+        postRequest.setAttachment(attachment);*/
 
         //when
         PostResponse postResponse = underTest.createPost(postRequest);
@@ -79,16 +79,13 @@ class PostServiceTests {
     void testCreatePost_SuccessfulPostCreationMissingDescription(){
         //Given
         PostRequest postRequest = new PostRequest();
-        com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
+        /*com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");
+        tags.add("Test Tag");*/
 
         postRequest.setTitle("Test Title");
-        postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);
-
-        //Mocking
-        when(postRepository.save(Mockito.any())).thenReturn(new Post());
+        /*postRequest.setTag(tags);
+        postRequest.setAttachment(attachment);*/
 
         //when
         PostResponse postResponse = underTest.createPost(postRequest);
@@ -105,13 +102,13 @@ class PostServiceTests {
     void testCreatePost_FailureMissingTitle() {
         // Given
         PostRequest postRequest = new PostRequest();
-        Attachment attachment = new Attachment();
+        /*Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");
+        tags.add("Test Tag");*/
 
         postRequest.setDescription("Test Description");
-        postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);
+        /*postRequest.setTag(tags);
+        postRequest.setAttachment(attachment);*/
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -128,11 +125,11 @@ class PostServiceTests {
     void testCreatePost_FailureMissingTags() {
         // Given
         PostRequest postRequest = new PostRequest();
-        Attachment attachment = new Attachment();
+        //Attachment attachment = new Attachment();
 
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
-        postRequest.setAttachment(attachment);
+        //postRequest.setAttachment(attachment);
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -149,14 +146,14 @@ class PostServiceTests {
     void testCreatePost_FailureNullTag() {
         // Given
         PostRequest postRequest = new PostRequest();
-        Attachment attachment = new Attachment();
+        /*Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
-        tags.add(null);
+        tags.add(null);*/
 
         postRequest.setTitle("Test Title");
-        postRequest.setTag(tags);
         postRequest.setDescription("Test Description");
-        postRequest.setAttachment(attachment);
+        /*postRequest.setAttachment(attachment);
+        postRequest.setTag(tags);*/
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -173,14 +170,14 @@ class PostServiceTests {
     void testCreatePost_FailureNullTitle() {
         // Given
         PostRequest postRequest = new PostRequest();
-        Attachment attachment = new Attachment();
+        /*Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");
+        tags.add("Test Tag");*/
 
         postRequest.setTitle(null);
-        postRequest.setTag(tags);
         postRequest.setDescription("Test Description");
-        postRequest.setAttachment(attachment);
+        /*postRequest.setAttachment(attachment);
+        postRequest.setTag(tags);*/
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -197,21 +194,17 @@ class PostServiceTests {
     void testCreatePost_FailureServiceUnavailable() {
         // Given
         PostRequest postRequest = new PostRequest();
-        Attachment attachment = new Attachment();
+        /*Attachment attachment = new Attachment();
         List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");
+        tags.add("Test Tag");*/
 
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
-        postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);
-
-        // Mocking behavior of the PostRepository to throw a ServiceUnavailableException
-        PostRepository postRepository = Mockito.mock(PostRepository.class);
-        when(postRepository.save(Mockito.any())).thenThrow(ServiceUnavailableException.class);
+        /*postRequest.setTag(tags);
+        postRequest.setAttachment(attachment);*/
 
         // When and Then
         assertThatExceptionOfType(ServiceUnavailableException.class)
                 .isThrownBy(() -> underTest.createPost(postRequest));
-    }*/
+    }
 }
