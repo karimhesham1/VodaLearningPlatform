@@ -1,13 +1,11 @@
 openapi: 3.0.3
 info:
   title: Training hub
-  description: |-
+  description: ''
   version: 1.0.11
-
 tags:
-  - name:   Post
-    description: |-
-
+  - name: Post
+    description: ''
 paths:
   /post:
     post:
@@ -21,7 +19,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PostRequest'
-
       responses:
         '201':
           description: Created succesfully
@@ -36,76 +33,63 @@ paths:
               schema:
                 type: object
                 properties:
-                  message :
+                  message:
                     type: string
-                    example : Invalid
+                    example: Invalid
   /post/{postId}:
     put:
-        tags:
-            - Post
-        description: update a post as a user
-        operationId: updatePost
-        parameters:
-            - name: postId
-              in: path
-              required: true
-              description: id of the post to be updated
-              schema:
-                type: string
-        requestBody:
-            required: true
-            content:
+      description: update a post as a user
+      operationId: updatePost
+      tags:
+        - Post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: id of the post to be updated
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostResponse'
+      responses:
+        '202':
+          description: Accepted
+          content:
             application/json:
-                schema:
-                $ref: '#/components/schemas/PostRequest'
-
-        responses:
-            '200':
-              description: Updated succesfully
-              content:
-                  application/json:
-                  schema:
-                      $ref: '#/components/schemas/PostResponse'
-            '400':
-              description: Bad response
-              content:
-                  application/json:
-                  schema:
-                      type: object
-                      properties:
-                      message :
-                          type: string
-                          example : Invalid
-
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '404':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not Found
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bad Request
 components:
   schemas:
-    PostRequest :
+    PostRequest:
       type: object
       properties:
         title:
           type: string
-          example : "Spring boot"
-        description:
-          type: string
-          example: "important in backend team"
-        tag:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-#          minItems: 1
-        attachment:
-          type: array
-          items:
-            $ref: '#/components/schemas/Attachment'
-
-    PostResponse :
-      type: object
-      properties:
-        postId :
-          type: string
-        title:
-          type: string
-          example : Springboot
+          example: Spring boot
         description:
           type: string
           example: important in backend team
@@ -113,21 +97,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Tag'
-#          minItems: 1
         attachment:
           type: array
           items:
             $ref: '#/components/schemas/Attachment'
-
+    PostResponse:
+      type: object
+      properties:
+        postId:
+          type: string
+        title:
+          type: string
+          example: Springboot
+        description:
+          type: string
+          example: important in backend team
+        tag:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
     Attachment:
       type: object
-      properties :
+      properties:
         attachment:
           type: string
-
     Tag:
       type: object
-      properties :
+      properties:
         tagName:
           type: string
-
