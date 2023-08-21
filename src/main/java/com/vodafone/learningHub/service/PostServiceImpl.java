@@ -31,4 +31,14 @@ public class PostServiceImpl implements PostServiceI{
 
         return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
+
+    @Override
+    public PostResponse updatePost(PostRequest postRequest) {
+
+        return null;
+    }
+
+    public Post getPostById(int postId) {
+        return postRepository.findByPostId(postId);
+    }
 }
