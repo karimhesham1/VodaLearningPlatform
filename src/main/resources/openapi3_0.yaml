@@ -48,7 +48,7 @@ paths:
           required: true
           description: id of the post to be updated
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
