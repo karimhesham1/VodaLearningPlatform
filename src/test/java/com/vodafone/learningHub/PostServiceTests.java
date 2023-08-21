@@ -1,30 +1,16 @@
 package com.vodafone.learningHub;
 
-import com.vodafone.learningHub.model.Post;
-//import com.vodafone.learningHub.openapi.model.Attachment;
-import com.vodafone.learningHub.model.Tag;
-import com.vodafone.learningHub.openapi.model.Attachment;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
-//import com.vodafone.learningHub.openapi.model.Tag;
-import com.vodafone.learningHub.repository.PostRepository;
 import com.vodafone.learningHub.service.PostServiceI;
-import com.vodafone.learningHub.service.PostServiceImpl;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.naming.ServiceUnavailableException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = LearningHubApplication.class)
 class PostServiceTests {
