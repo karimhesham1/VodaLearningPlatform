@@ -17,10 +17,9 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PostMapper {
-    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @Mapping(source = "tags", target = "tag", qualifiedByName = "tagSetToList")
     PostResponse postToPostResponse(Post post);
-//    @Mapping(source = "tag", target = "tags", qualifiedByName = "tagListToSet")
+    //    @Mapping(source = "tag", target = "tags", qualifiedByName = "tagListToSet")
     Post postRequestToPost(PostRequest postRequest);
 
     @Named("tagSetToList")

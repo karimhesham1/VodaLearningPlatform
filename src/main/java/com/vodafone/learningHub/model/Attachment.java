@@ -15,8 +15,9 @@ public class Attachment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attachment_id")
     private int attachmentId;
-
     @Column(name = "attachment")
     private String attachment;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
+    private Post post;
 }
