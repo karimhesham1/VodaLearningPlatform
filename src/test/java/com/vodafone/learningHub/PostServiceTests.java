@@ -2,6 +2,7 @@ package com.vodafone.learningHub;
 
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
+import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.service.PostServiceI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.naming.ServiceUnavailableException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -193,4 +197,127 @@ class PostServiceTests {
         assertThatExceptionOfType(ServiceUnavailableException.class)
                 .isThrownBy(() -> underTest.createPost(postRequest));
     }
+
+    //scenarios
+
+//    Successful Post Edit (HTTP 202 Accepted)
+//    Attempt to Edit Nonexistent Post (HTTP 404 Not Found)
+//    Missing Required Fields (HTTP 400 Bad Request)
+//    Successful Post Edit with No Changes (HTTP 202 Accepted)
+
+    @Test
+    void testUpdatePost_SuccessfulPostEdit() {
+        // Given
+        PostRequest initialPostRequest = new PostRequest();
+        initialPostRequest.setTitle("Initial Title");
+        initialPostRequest.setDescription("Initial Description");
+
+//        List<Tag> tags = new ArrayList<>();
+//        Tag oldTag = new Tag();
+//        oldTag.setTagName("oldName");
+//        tags.add(oldTag);
+//        initialPostRequest.setTag(tags);
+
+
+        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+
+        String postId = initialPostResponse.getPostId();
+
+        PostRequest updatedPostRequest = new PostRequest();
+        updatedPostRequest.setTitle("Updated Title");
+        updatedPostRequest.setDescription("Updated Description");
+
+        // When
+        PostResponse updatedPostResponse = underTest.updatePost(postId, updatedPostRequest);
+
+        // Then
+        assertThat(updatedPostResponse.getPostId()).isEqualTo(postId);
+        assertThat(updatedPostResponse.getTitle()).isEqualTo(updatedPostRequest.getTitle());
+        assertThat(updatedPostResponse.getDescription()).isEqualTo(updatedPostRequest.getDescription());
+        assertThat(updatedPostResponse.getTag()).isEqualTo(updatedPostRequest.getTag());
+    }
+
+    @Test
+    void testUpdatePost_NonexistentPost() {
+        // Given
+        String nonexistentPostId = "nonexistentId";
+        PostRequest updatedPostRequest = new PostRequest();
+        updatedPostRequest.setTitle("Updated Title");
+        updatedPostRequest.setDescription("Updated Description");
+
+
+        // When
+        // Attempt to update a nonexistent post
+        ApiException exception = Assertions.assertThrows(ApiException.class, () -> {
+            underTest.updatePost(nonexistentPostId, updatedPostRequest);
+        });
+
+        // Then
+        assertThat(exception.getCode()).isEqualTo(404);
+    }
+
+    @Test
+    void testUpdatePost_MissingFields() {
+        // Given
+        PostRequest initialPostRequest = new PostRequest();
+        initialPostRequest.setTitle("Initial Title");
+        initialPostRequest.setDescription("Initial Description");
+        initialPostRequest.setTag(Arrays.asList(new Tag("tag1")));
+
+        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+
+        String postId = initialPostResponse.getPostId();
+
+        PostRequest updatedPostRequest = new PostRequest();
+        updatedPostRequest.setTag(Arrays.asList(new Tag("updatedTag")));
+
+        // When
+        // Attempt to update with missing fields
+        ApiException exception = Assertions.assertThrows(ApiException.class, () -> {
+            underTest.updatePost(postId, updatedPostRequest);
+        });
+
+        // Then
+        assertThat(exception.getCode()).isEqualTo(400);
+    }
+
+    @Test
+    void testUpdatePost_NoChanges() {
+        // Given
+        PostRequest initialPostRequest = new PostRequest();
+        initialPostRequest.setTitle("Initial Title");
+        initialPostRequest.setDescription("Initial Description");
+        initialPostRequest.setTag(Arrays.asList(new Tag("tag1")));
+
+        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+
+        String postId = initialPostResponse.getPostId();
+
+        // When
+        // Attempt to update with no changes
+        PostResponse updatedPostResponse = underTest.updatePost(postId, initialPostRequest);
+
+        // Then
+        assertThat(updatedPostResponse).isEqualTo(initialPostResponse);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

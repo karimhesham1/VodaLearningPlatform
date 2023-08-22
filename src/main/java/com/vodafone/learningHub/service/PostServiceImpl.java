@@ -34,4 +34,9 @@ public class PostServiceImpl implements PostServiceI{
 
         return postMapper.postToPostResponse(postResponse);
     }
+
+    @Override
+    public PostResponse updatePost(PostRequest postRequest) {
+        return null;
+    }
 }
