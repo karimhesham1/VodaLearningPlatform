@@ -32,9 +32,26 @@ public class PostController implements PostApi {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
-
-
     }
+
+    @Override
+    public ResponseEntity<PostResponse> updatePost(Integer postId,PostRequest postRequest) {
+        Post post = postServiceI.getPostById(postId);
+        if (post == null) {
+            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Post not found");
+        }
+        try {
+            PostResponse postResponse  = postServiceI.updatePost(postId,postRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(postResponse);
+
+        } catch(IllegalArgumentException ex) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
+
+        } catch (Exception ex) {
+            throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
+    }
+
 
 
 }

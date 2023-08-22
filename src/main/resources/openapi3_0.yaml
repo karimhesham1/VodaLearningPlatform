@@ -48,13 +48,13 @@ paths:
           required: true
           description: id of the post to be updated
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostResponse'
+              $ref: '#/components/schemas/PostRequest'
       responses:
         '202':
           description: Accepted
