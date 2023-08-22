@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="user")
+@Table(name="poster")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

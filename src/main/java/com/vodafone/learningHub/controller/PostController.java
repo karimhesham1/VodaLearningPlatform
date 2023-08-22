@@ -1,26 +1,19 @@
 package com.vodafone.learningHub.controller;
 
-import com.vodafone.learningHub.model.Post;
-import com.vodafone.learningHub.openapi.api.PostApi;
+import com.vodafone.learningHub.openapi.PostApi;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.service.PostServiceI;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.annotation.PostConstruct;
-import javax.validation.Valid;
-import java.net.URI;
-
 
 @RequiredArgsConstructor
 @RestController
-public class PostController implements PostApi  {
+public class PostController implements PostApi {
 
     private final PostServiceI postServiceI;
 
