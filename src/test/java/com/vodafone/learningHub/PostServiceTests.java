@@ -266,7 +266,7 @@ class PostServiceTests {
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
-        String postId = initialPostResponse.getPostId();
+        int postId = initialPostResponse.getPostId();
 
         PostRequest updatedPostRequest = new PostRequest();
         updatedPostRequest.setTitle(null);
