@@ -7,5 +7,5 @@ import com.vodafone.learningHub.openapi.model.PostResponse;
 public interface PostServiceI {
 
     public PostResponse createPost(PostRequest postRequest);
-    
+
 }
