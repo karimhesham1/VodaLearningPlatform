@@ -20,7 +20,7 @@ public interface PostMapper {
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @Mapping(source = "tags", target = "tag", qualifiedByName = "tagSetToList")
     PostResponse postToPostResponse(Post post);
-//    @Mapping(source = "tag", target = "tags", qualifiedByName = "tagListToSet")
+    @Mapping(source = "tag", target = "tags", qualifiedByName = "tagListToSet")
     Post postRequestToPost(PostRequest postRequest);
 
     @Named("tagSetToList")
@@ -34,6 +34,20 @@ public interface PostMapper {
             tagList.add(new com.vodafone.learningHub.openapi.model.Tag().tagName(tag.getTag()));
         }
         return tagList;
+    }
+
+    @Named("tagListToSet")
+    default Set<Tag> tagListToSet(List<com.vodafone.learningHub.openapi.model.Tag> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return new HashSet<>();
+        }
+        Set<Tag> tagSet = new HashSet<>();
+        for (com.vodafone.learningHub.openapi.model.Tag tag : tags) {
+            Tag newTag = new Tag();
+            newTag.setTag(tag.getTagName());
+            tagSet.add(newTag);
+        }
+        return tagSet;
     }
 
 //    @Named("tagListToSet")
