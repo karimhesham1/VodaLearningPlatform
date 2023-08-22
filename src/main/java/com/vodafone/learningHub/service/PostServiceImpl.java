@@ -50,8 +50,24 @@ public class PostServiceImpl implements PostServiceI{
 
     @Override
     public PostResponse updatePost(Integer postId,PostRequest postRequest) {
+        Post post=getPostById(postId);
+        Post editedPost = PostMapper.INSTANCE.postRequestToPost(postRequest);
+        post.setTitle(editedPost.getTitle());
+        post.setDescription(editedPost.getDescription());
+        post.setTags(editedPost.getTags());
+        post.setAttachments(editedPost.getAttachments());
 
-        return null;
+
+
+        if (post.getTags() == null || post.getTags().isEmpty()) {
+            throw new IllegalArgumentException("A post must have at least one tag");
+        }
+
+
+
+        Post postResponse= postRepository.save(editedPost);
+
+        return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
 
     public Post getPostById(int postId) {
