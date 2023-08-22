@@ -1,10 +1,12 @@
 package com.vodafone.learningHub.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vodafone.learningHub.model.Post;
 import com.vodafone.learningHub.openapi.api.PostApi;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.service.PostServiceI;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +44,17 @@ public class PostController implements PostApi  {
     }
 
     @Override
-    public ResponseEntity<PostResponse> updatePost(Integer postId,PostRequest postRequest) {
-        Post post = postServiceI.getPostById(postId);
-        if (post == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Post not found");
-        }
+    public ResponseEntity<PostResponse> updatePost(Integer postId, PostRequest postRequest) {
         try {
-            PostResponse postResponse  = postServiceI.updatePost(postId,postRequest);
+            PostResponse postResponse = postServiceI.updatePost(postId, postRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(postResponse);
 
-        } catch(IllegalArgumentException ex) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+//            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
+            return ResponseEntity.badRequest().build();
 
+        } catch (NotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception ex) {
             throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
