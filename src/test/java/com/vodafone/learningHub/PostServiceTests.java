@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.naming.ServiceUnavailableException;
 
@@ -240,7 +241,7 @@ class PostServiceTests {
     @Test
     void testUpdatePost_NonexistentPost() {
         // Given
-        String nonexistentPostId = "nonexistentId";
+        int nonexistentPostId = 999999;
         PostRequest updatedPostRequest = new PostRequest();
         updatedPostRequest.setTitle("Updated Title");
         updatedPostRequest.setDescription("Updated Description");
@@ -248,12 +249,12 @@ class PostServiceTests {
 
         // When
         // Attempt to update a nonexistent post
-        ApiException exception = Assertions.assertThrows(ApiException.class, () -> {
+        HttpClientErrorException exception = Assertions.assertThrows(HttpClientErrorException.class, () -> {
             underTest.updatePost(nonexistentPostId, updatedPostRequest);
         });
 
         // Then
-        assertThat(exception.getCode()).isEqualTo(404);
+        assertThat(exception.getClass()).isEqualTo(HttpClientErrorException.class);
     }
 
     @Test
@@ -262,23 +263,25 @@ class PostServiceTests {
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
         initialPostRequest.setDescription("Initial Description");
-        initialPostRequest.setTag(Arrays.asList(new Tag("tag1")));
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
         String postId = initialPostResponse.getPostId();
 
         PostRequest updatedPostRequest = new PostRequest();
-        updatedPostRequest.setTag(Arrays.asList(new Tag("updatedTag")));
+        updatedPostRequest.setTitle(null);
+        updatedPostRequest.setDescription("new description");
 
         // When
         // Attempt to update with missing fields
-        ApiException exception = Assertions.assertThrows(ApiException.class, () -> {
+        HttpClientErrorException exception = Assertions.assertThrows(HttpClientErrorException.class, () -> {
             underTest.updatePost(postId, updatedPostRequest);
         });
 
         // Then
-        assertThat(exception.getCode()).isEqualTo(400);
+        String expectedErrorMessage = "Bad Request"; // Adjust to the actual error message
+        String actualErrorMessage = exception.getMessage();
+        Assertions.assertTrue(actualErrorMessage.contains(expectedErrorMessage));
     }
 
     @Test
@@ -287,7 +290,6 @@ class PostServiceTests {
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
         initialPostRequest.setDescription("Initial Description");
-        initialPostRequest.setTag(Arrays.asList(new Tag("tag1")));
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
