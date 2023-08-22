@@ -48,7 +48,7 @@ public class PostController implements PostApi  {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Post not found");
         }
         try {
-            PostResponse postResponse  = postServiceI.updatePost(postRequest);
+            PostResponse postResponse  = postServiceI.updatePost(postId,postRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(postResponse);
 
         } catch(IllegalArgumentException ex) {
