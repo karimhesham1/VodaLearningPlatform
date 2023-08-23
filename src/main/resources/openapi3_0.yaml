@@ -105,7 +105,7 @@ components:
       type: object
       properties:
         postId:
-          type: string
+          type: integer
         title:
           type: string
           example: Springboot
