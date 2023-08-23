@@ -1,12 +1,15 @@
 package com.vodafone.learningHub;
 
 import com.vodafone.learningHub.mapper.PostMapper;
+import com.vodafone.learningHub.model.Post;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.service.PostServiceI;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
@@ -27,170 +30,173 @@ class PostServiceTest {
     @Autowired
     private PostServiceI underTest;
 
-    @Test
-    void testCreatePost_SuccessfulPostCreation(){
-        //Given
-        PostRequest postRequest = new PostRequest();
+    @Nested
+    class TestCreatePost {
+        @Test
+        void testCreatePost_SuccessfulPostCreation() {
+            //Given
+            PostRequest postRequest = new PostRequest();
 
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        postRequest.setTag(tags);
-        postRequest.setTitle("Test Title");
-        postRequest.setDescription("Test Description");
-
-
-        //when
-        PostResponse postResponse = underTest.createPost(postRequest);
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            postRequest.setTag(tags);
+            postRequest.setTitle("Test Title");
+            postRequest.setDescription("Test Description");
 
 
-        //then
-        assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
-        assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
-        assertThat(postResponse.getPostId()).isNotNull();
-        assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
-    }
-
-    @Test
-    void testCreatePost_SuccessfulPostCreationMultipleTags(){
-        //Given
-        PostRequest postRequest = new PostRequest();
-
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        Tag newTag2 = new Tag();
-        newTag2.setTagName("Test Tag2");
-        tags.add(newTag2);
-        postRequest.setTag(tags);
-
-        postRequest.setTitle("Test Title");
-        postRequest.setDescription("Test Description");
-
-        //when
-        PostResponse postResponse = underTest.createPost(postRequest);
+            //when
+            PostResponse postResponse = underTest.createPost(postRequest);
 
 
-        //then
-        assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
-        assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
-        assertThat(postResponse.getPostId()).isNotNull();
-        assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
-    }
+            //then
+            assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
+            assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
+            assertThat(postResponse.getPostId()).isNotNull();
+            assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
+        }
 
-    @Test
-    void testCreatePost_SuccessfulPostCreationMissingDescription(){
-        //Given
-        PostRequest postRequest = new PostRequest();
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
+        @Test
+        void testCreatePost_SuccessfulPostCreationMultipleTags() {
+            //Given
+            PostRequest postRequest = new PostRequest();
 
-        postRequest.setTitle("Test Title");
-        postRequest.setTag(tags);
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            Tag newTag2 = new Tag();
+            newTag2.setTagName("Test Tag2");
+            tags.add(newTag2);
+            postRequest.setTag(tags);
 
-        //when
-        PostResponse postResponse = underTest.createPost(postRequest);
+            postRequest.setTitle("Test Title");
+            postRequest.setDescription("Test Description");
+
+            //when
+            PostResponse postResponse = underTest.createPost(postRequest);
 
 
-        //then
-        assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
-        assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
-        assertThat(postResponse.getPostId()).isNotNull();
-        assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
-    }
+            //then
+            assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
+            assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
+            assertThat(postResponse.getPostId()).isNotNull();
+            assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
+        }
 
-    @Test
-    void testCreatePost_FailureMissingTitle() {
-        // Given
-        PostRequest postRequest = new PostRequest();
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
+        @Test
+        void testCreatePost_SuccessfulPostCreationMissingDescription() {
+            //Given
+            PostRequest postRequest = new PostRequest();
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
 
-        postRequest.setDescription("Test Description");
-        postRequest.setTag(tags);
+            postRequest.setTitle("Test Title");
+            postRequest.setTag(tags);
 
-        // When
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            underTest.createPost(postRequest);
-        });
+            //when
+            PostResponse postResponse = underTest.createPost(postRequest);
 
-        // Then
-        String expectedMessage = "A post must have a title";
-        String actualMessage = exception.getMessage();
-        Assertions.assertTrue(actualMessage.contains(expectedMessage));
-    }
 
-    @Test
-    void testCreatePost_FailureMissingTags() {
-        // Given
-        PostRequest postRequest = new PostRequest();
-        //Attachment attachment = new Attachment();
+            //then
+            assertThat(postResponse.getTitle()).isEqualTo(postRequest.getTitle());
+            assertThat(postResponse.getDescription()).isEqualTo(postRequest.getDescription());
+            assertThat(postResponse.getPostId()).isNotNull();
+            assertThatCode(() -> underTest.createPost(postRequest)).doesNotThrowAnyException();
+        }
 
-        postRequest.setTitle("Test Title");
-        postRequest.setDescription("Test Description");
-        //postRequest.setAttachment(attachment);
+        @Test
+        void testCreatePost_FailureMissingTitle() {
+            // Given
+            PostRequest postRequest = new PostRequest();
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
 
-        // When
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            underTest.createPost(postRequest);
-        });
+            postRequest.setDescription("Test Description");
+            postRequest.setTag(tags);
 
-        // Then
-        String expectedMessage = "A post must have at least one tag";
-        String actualMessage = exception.getMessage();
-        Assertions.assertTrue(actualMessage.contains(expectedMessage));
-    }
+            // When
+            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                underTest.createPost(postRequest);
+            });
 
-    @Test
-    void testCreatePost_FailureNullTag() {
-        // Given
-        PostRequest postRequest = new PostRequest();
-        List<Tag> tags = new ArrayList<>();
-        tags.add(null);
+            // Then
+            String expectedMessage = "A post must have a title";
+            String actualMessage = exception.getMessage();
+            Assertions.assertTrue(actualMessage.contains(expectedMessage));
+        }
 
-        postRequest.setTitle("Test Title");
-        postRequest.setDescription("Test Description");
-        postRequest.setTag(tags);
+        @Test
+        void testCreatePost_FailureMissingTags() {
+            // Given
+            PostRequest postRequest = new PostRequest();
+            //Attachment attachment = new Attachment();
 
-        // When
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            underTest.createPost(postRequest);
-        });
+            postRequest.setTitle("Test Title");
+            postRequest.setDescription("Test Description");
+            //postRequest.setAttachment(attachment);
 
-        // Then
-        String expectedMessage = "A post must have at least one tag";
-        String actualMessage = exception.getMessage();
-        Assertions.assertTrue(actualMessage.contains(expectedMessage));
-    }
+            // When
+            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                underTest.createPost(postRequest);
+            });
 
-    @Test
-    void testCreatePost_FailureNullTitle() {
-        // Given
-        PostRequest postRequest = new PostRequest();
+            // Then
+            String expectedMessage = "A post must have at least one tag";
+            String actualMessage = exception.getMessage();
+            Assertions.assertTrue(actualMessage.contains(expectedMessage));
+        }
 
-        postRequest.setTitle(null);
-        postRequest.setDescription("Test Description");
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        postRequest.setTag(tags);
+        @Test
+        void testCreatePost_FailureNullTag() {
+            // Given
+            PostRequest postRequest = new PostRequest();
+            List<Tag> tags = new ArrayList<>();
+            tags.add(null);
 
-        // When
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            underTest.createPost(postRequest);
-        });
+            postRequest.setTitle("Test Title");
+            postRequest.setDescription("Test Description");
+            postRequest.setTag(tags);
 
-        // Then
-        String expectedMessage = "A post must have a title";
-        String actualMessage = exception.getMessage();
-        Assertions.assertTrue(actualMessage.contains(expectedMessage));
+            // When
+            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                underTest.createPost(postRequest);
+            });
+
+            // Then
+            String expectedMessage = "A post must have at least one tag";
+            String actualMessage = exception.getMessage();
+            Assertions.assertTrue(actualMessage.contains(expectedMessage));
+        }
+
+        @Test
+        void testCreatePost_FailureNullTitle() {
+            // Given
+            PostRequest postRequest = new PostRequest();
+
+            postRequest.setTitle(null);
+            postRequest.setDescription("Test Description");
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            postRequest.setTag(tags);
+
+            // When
+            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                underTest.createPost(postRequest);
+            });
+
+            // Then
+            String expectedMessage = "A post must have a title";
+            String actualMessage = exception.getMessage();
+            Assertions.assertTrue(actualMessage.contains(expectedMessage));
+        }
     }
 
     //scenarios
@@ -200,131 +206,126 @@ class PostServiceTest {
 //    Missing Required Fields (HTTP 400 Bad Request)
 //    Successful Post Edit with No Changes (HTTP 202 Accepted)
 
-    @Test
-    void testUpdatePost_SuccessfulPostEdit() throws NotFoundException {
-        // Given
-        PostRequest initialPostRequest = new PostRequest();
-        initialPostRequest.setTitle("Initial Title");
-        initialPostRequest.setDescription("Initial Description");
+    @Nested
+    class TestUpdatePost {
+        PostResponse initialPostResponse;
+        @BeforeEach
+        void setUp(){
+            PostRequest initialPostRequest = new PostRequest();
+            initialPostRequest.setTitle("Initial Title");
+            initialPostRequest.setDescription("Initial Description");
 
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        initialPostRequest.setTag(tags);
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            initialPostRequest.setTag(tags);
+
+            initialPostResponse  = underTest.createPost(initialPostRequest);
+
+        }
+
+        @Test
+        void testUpdatePost_SuccessfulPostEdit() throws NotFoundException {
 
 
-        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+            Integer postId = initialPostResponse.getPostId();
 
-        int postId = initialPostResponse.getPostId();
+            PostRequest updatedPostRequest = new PostRequest();
+            updatedPostRequest.setTitle("Updated Title");
+            updatedPostRequest.setDescription("Updated Description");
 
-        PostRequest updatedPostRequest = new PostRequest();
-        updatedPostRequest.setTitle("Updated Title");
-        updatedPostRequest.setDescription("Updated Description");
 
-        // When
-        PostResponse updatedPostResponse = underTest.updatePost(postId, updatedPostRequest);
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("updated Tag");
+            tags.add(newTag);
+            updatedPostRequest.setTag(tags);
 
-        // Then
-        assertThat(updatedPostResponse.getPostId()).isEqualTo(postId);
-        assertThat(updatedPostResponse.getTitle()).isEqualTo(updatedPostRequest.getTitle());
-        assertThat(updatedPostResponse.getDescription()).isEqualTo(updatedPostRequest.getDescription());
-        assertThat(updatedPostResponse.getTag()).isEqualTo(updatedPostRequest.getTag());
+
+            // When
+            PostResponse updatedPostResponse = underTest.updatePost(postId, updatedPostRequest);
+
+            // Then
+            assertThat(updatedPostResponse.getPostId()).isEqualTo(postId);
+            assertThat(updatedPostResponse.getTitle()).isEqualTo(updatedPostRequest.getTitle());
+            assertThat(updatedPostResponse.getDescription()).isEqualTo(updatedPostRequest.getDescription());
+            assertThat(updatedPostResponse.getTag()).isEqualTo(updatedPostRequest.getTag());
+        }
+
+        @Test
+        void testUpdatePost_NonexistentPost() {
+            // Given
+            int nonexistentPostId = 999999;
+            PostRequest updatedPostRequest = new PostRequest();
+            updatedPostRequest.setTitle("Updated Title");
+            updatedPostRequest.setDescription("Updated Description");
+
+
+            // When
+            // Attempt to update a nonexistent post
+            NotFoundException exception = Assertions.assertThrows(NotFoundException.class, () -> {
+                underTest.updatePost(nonexistentPostId, updatedPostRequest);
+            });
+
+            // Then
+            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+        }
+
+        @Test
+        void testUpdatePost_MissingFields() {
+            // Given
+            PostRequest initialPostRequest = new PostRequest();
+            initialPostRequest.setTitle("Initial Title");
+            initialPostRequest.setDescription("Initial Description");
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            initialPostRequest.setTag(tags);
+
+            PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+
+            int postId = initialPostResponse.getPostId();
+
+            PostRequest updatedPostRequest = new PostRequest();
+            updatedPostRequest.setTitle(null);
+            updatedPostRequest.setDescription("new description");
+
+            // When
+            // Attempt to update with missing fields
+            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                underTest.updatePost(postId, updatedPostRequest);
+            });
+
+            // Then
+            String expectedErrorMessage = "Bad Request"; // Adjust to the actual error message
+            String actualErrorMessage = exception.getMessage();
+            Assertions.assertTrue(actualErrorMessage.contains(expectedErrorMessage));
+        }
+
+        @Test
+        void testUpdatePost_NoChanges() throws NotFoundException {
+            // Given
+            PostRequest initialPostRequest = new PostRequest();
+            initialPostRequest.setTitle("Initial Title");
+            initialPostRequest.setDescription("Initial Description");
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            initialPostRequest.setTag(tags);
+
+            PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+
+            int postId = initialPostResponse.getPostId();
+
+            // When
+            // Attempt to update with no changes
+            PostResponse updatedPostResponse = underTest.updatePost(postId, initialPostRequest);
+
+            // Then
+            assertThat(updatedPostResponse).isEqualTo(initialPostResponse);
+        }
     }
-
-    @Test
-    void testUpdatePost_NonexistentPost() {
-        // Given
-        int nonexistentPostId = 999999;
-        PostRequest updatedPostRequest = new PostRequest();
-        updatedPostRequest.setTitle("Updated Title");
-        updatedPostRequest.setDescription("Updated Description");
-
-
-
-        // When
-        // Attempt to update a nonexistent post
-        HttpClientErrorException exception = Assertions.assertThrows(HttpClientErrorException.class, () -> {
-            underTest.updatePost(nonexistentPostId, updatedPostRequest);
-        });
-
-        // Then
-        assertThat(exception.getClass()).isEqualTo(HttpClientErrorException.class);
-    }
-
-    @Test
-    void testUpdatePost_MissingFields() {
-        // Given
-        PostRequest initialPostRequest = new PostRequest();
-        initialPostRequest.setTitle("Initial Title");
-        initialPostRequest.setDescription("Initial Description");
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        initialPostRequest.setTag(tags);
-
-        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
-
-        int postId = initialPostResponse.getPostId();
-
-        PostRequest updatedPostRequest = new PostRequest();
-        updatedPostRequest.setTitle(null);
-        updatedPostRequest.setDescription("new description");
-
-        // When
-        // Attempt to update with missing fields
-        HttpClientErrorException exception = Assertions.assertThrows(HttpClientErrorException.class, () -> {
-            underTest.updatePost(postId, updatedPostRequest);
-        });
-
-        // Then
-        String expectedErrorMessage = "Bad Request"; // Adjust to the actual error message
-        String actualErrorMessage = exception.getMessage();
-        Assertions.assertTrue(actualErrorMessage.contains(expectedErrorMessage));
-    }
-
-    @Test
-    void testUpdatePost_NoChanges() throws NotFoundException {
-        // Given
-        PostRequest initialPostRequest = new PostRequest();
-        initialPostRequest.setTitle("Initial Title");
-        initialPostRequest.setDescription("Initial Description");
-        List<Tag> tags = new ArrayList<>();
-        Tag newTag = new Tag();
-        newTag.setTagName("Test Tag");
-        tags.add(newTag);
-        initialPostRequest.setTag(tags);
-
-        PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
-
-        int postId = initialPostResponse.getPostId();
-
-        // When
-        // Attempt to update with no changes
-        PostResponse updatedPostResponse = underTest.updatePost(postId, initialPostRequest);
-
-        // Then
-        assertThat(updatedPostResponse).isEqualTo(initialPostResponse);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
