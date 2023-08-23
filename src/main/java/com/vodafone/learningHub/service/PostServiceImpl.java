@@ -2,9 +2,9 @@ package com.vodafone.learningHub.service;
 
 import com.vodafone.learningHub.mapper.PostMapper;
 import com.vodafone.learningHub.model.Post;
-import com.vodafone.learningHub.model.Tag;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
+import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.repository.PostRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -31,18 +31,15 @@ public class PostServiceImpl implements PostServiceI{
         if (post.getTags() == null || post.getTags().isEmpty()) {
             throw new IllegalArgumentException("A post must have at least one tag");
         }
-//        tagServiceImp.deleteAllTags();
-//        Set<Tag> tags = new HashSet<>();
-//        for(Tag tag : post.getTags()) {
-////            if (!tagServiceImp.existsByTag(tag.getTag())) {
-//////                Tag newTag = tagServiceImp.saveTag(tag);
-//////                tags.add(newTag);
-////            }else {
-//////                tags.add(tagServiceImp.findTagByTag(tag.getTag()));
-////            }
-//            Tag newTag = tagServiceImp.findTagByTag(tag.getTag());
-//        }
-//        post.setTags(tags);
+
+        for(Tag tag:postRequest.getTag()){
+            if(!tagServiceImp.existsById(tag.getTagName())){
+                com.vodafone.learningHub.model.Tag newTag = new com.vodafone.learningHub.model.Tag();
+                newTag.setTag(tag.getTagName());
+                tagServiceImp.saveTag(newTag);
+            }
+        }
+
         if (post.getTitle() == null || post.getTitle().isEmpty()) {
             throw new IllegalArgumentException("A post must have a title");
         }

@@ -22,6 +22,6 @@ public class Tag {
     @Id
     @Column(name="tag", unique = true)
     private String tag;
-//    @ManyToMany(mappedBy = "tags")
-//    private Set<Post> posts;
+    @ManyToMany(mappedBy = "tags")
+    private Set<Post> posts;
 }
