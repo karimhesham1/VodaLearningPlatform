@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name="region")
 public class Region {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="region_id")
     private int regionId;
     @Column(name="region")

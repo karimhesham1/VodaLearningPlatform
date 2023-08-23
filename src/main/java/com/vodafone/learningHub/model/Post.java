@@ -34,8 +34,8 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private Set<Attachment> attachments;
     @NotEmpty(message = "A post must have at least one tag")
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "tag_id"))
+    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag"))
     private Set<Tag> tags;
 }

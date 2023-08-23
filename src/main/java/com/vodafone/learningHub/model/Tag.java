@@ -13,14 +13,15 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="tags")
+@Table(name="tag")
 public class Tag {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name="tag_id")
+//    private int tagId;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="tag_id")
-    private int tagId;
     @Column(name="tag", unique = true)
     private String tag;
-    @ManyToMany(mappedBy = "tags")
-    private Set<Post> posts;
+//    @ManyToMany(mappedBy = "tags")
+//    private Set<Post> posts;
 }
