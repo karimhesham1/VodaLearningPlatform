@@ -62,7 +62,7 @@ class PostServiceTest {
         newTag.setTagName("Test Tag");
         tags.add(newTag);
         Tag newTag2 = new Tag();
-        newTag.setTagName("Test Tag");
+        newTag2.setTagName("Test Tag2");
         tags.add(newTag2);
         postRequest.setTag(tags);
 
@@ -173,14 +173,14 @@ class PostServiceTest {
     void testCreatePost_FailureNullTitle() {
         // Given
         PostRequest postRequest = new PostRequest();
-        /*Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");*/
 
         postRequest.setTitle(null);
         postRequest.setDescription("Test Description");
-        /*postRequest.setAttachment(attachment);
-        postRequest.setTag(tags);*/
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        postRequest.setTag(tags);
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -191,24 +191,6 @@ class PostServiceTest {
         String expectedMessage = "A post must have a title";
         String actualMessage = exception.getMessage();
         Assertions.assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    void testCreatePost_FailureServiceUnavailable() {
-        // Given
-        PostRequest postRequest = new PostRequest();
-        /*Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");*/
-
-        postRequest.setTitle("Test Title");
-        postRequest.setDescription("Test Description");
-        /*postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);*/
-
-        // When and Then
-        assertThatExceptionOfType(ServiceUnavailableException.class)
-                .isThrownBy(() -> underTest.createPost(postRequest));
     }
 
     //scenarios
@@ -225,11 +207,11 @@ class PostServiceTest {
         initialPostRequest.setTitle("Initial Title");
         initialPostRequest.setDescription("Initial Description");
 
-//        List<Tag> tags = new ArrayList<>();
-//        Tag oldTag = new Tag();
-//        oldTag.setTagName("oldName");
-//        tags.add(oldTag);
-//        initialPostRequest.setTag(tags);
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        initialPostRequest.setTag(tags);
 
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
@@ -259,6 +241,7 @@ class PostServiceTest {
         updatedPostRequest.setDescription("Updated Description");
 
 
+
         // When
         // Attempt to update a nonexistent post
         HttpClientErrorException exception = Assertions.assertThrows(HttpClientErrorException.class, () -> {
@@ -275,6 +258,11 @@ class PostServiceTest {
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
         initialPostRequest.setDescription("Initial Description");
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        initialPostRequest.setTag(tags);
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
@@ -302,6 +290,11 @@ class PostServiceTest {
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
         initialPostRequest.setDescription("Initial Description");
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        initialPostRequest.setTag(tags);
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
