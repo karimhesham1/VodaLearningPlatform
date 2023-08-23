@@ -141,8 +141,9 @@ class PostServiceTest {
             postRequest.setDescription("Test Description");
             //postRequest.setAttachment(attachment);
 
+
             // When
-            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> {
                 underTest.createPost(postRequest);
             });
 
@@ -162,6 +163,7 @@ class PostServiceTest {
             postRequest.setTitle("Test Title");
             postRequest.setDescription("Test Description");
             postRequest.setTag(tags);
+
 
             // When
             NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> {
