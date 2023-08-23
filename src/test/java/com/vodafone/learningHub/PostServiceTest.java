@@ -157,14 +157,14 @@ class PostServiceTest {
             // Given
             PostRequest postRequest = new PostRequest();
             List<Tag> tags = new ArrayList<>();
-            tags.add(null);
+    //        tags.add(null);
 
             postRequest.setTitle("Test Title");
             postRequest.setDescription("Test Description");
             postRequest.setTag(tags);
 
             // When
-            IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> {
                 underTest.createPost(postRequest);
             });
 

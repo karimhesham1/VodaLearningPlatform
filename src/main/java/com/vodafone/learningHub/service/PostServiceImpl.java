@@ -30,10 +30,13 @@ public class PostServiceImpl implements PostServiceI{
     public PostResponse createPost(PostRequest postRequest) {
         Post post = PostMapper.INSTANCE.postRequestToPost(postRequest);
         if (post.getTags() == null || post.getTags().isEmpty()) {
-            throw new IllegalArgumentException("A post must have at least one tag");
+            throw new NullPointerException("A post must have at least one tag");
         }
 
         for(Tag tag:postRequest.getTag()){
+            if(tag.getTagName() == null){
+                throw new NullPointerException("Tag cannot be null");
+            }
             if(!tagServiceImp.existsById(tag.getTagName())){
                 com.vodafone.learningHub.model.Tag newTag = new com.vodafone.learningHub.model.Tag();
                 newTag.setTag(tag.getTagName());
