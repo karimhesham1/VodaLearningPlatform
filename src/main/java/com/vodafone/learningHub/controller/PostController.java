@@ -2,7 +2,7 @@ package com.vodafone.learningHub.controller;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vodafone.learningHub.model.Post;
-import com.vodafone.learningHub.openapi.api.PostApi;
+import com.vodafone.learningHub.openapi.PostApi;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.service.PostServiceI;
@@ -22,7 +22,7 @@ import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
-public class PostController implements PostApi  {
+public class PostController implements PostApi {
 
     private final PostServiceI postServiceI;
 

@@ -1,24 +1,29 @@
 package com.vodafone.learningHub;
 
+import com.vodafone.learningHub.mapper.PostMapper;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.service.PostServiceI;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.naming.ServiceUnavailableException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
-@SpringBootTest(classes = LearningHubApplication.class)
-class PostServiceTests {
+@SpringBootTest(classes = {LearningHubApplication.class})
+class PostServiceTest {
+
     @Autowired
     private PostServiceI underTest;
 
@@ -27,8 +32,14 @@ class PostServiceTests {
         //Given
         PostRequest postRequest = new PostRequest();
 
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        postRequest.setTag(tags);
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
+
 
         //when
         PostResponse postResponse = underTest.createPost(postRequest);
@@ -45,15 +56,18 @@ class PostServiceTests {
     void testCreatePost_SuccessfulPostCreationMultipleTags(){
         //Given
         PostRequest postRequest = new PostRequest();
-        /*com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");
-        tags.add("Test Tag 2");*/
+
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
+        Tag newTag2 = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag2);
+        postRequest.setTag(tags);
 
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
-        /*postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);*/
 
         //when
         PostResponse postResponse = underTest.createPost(postRequest);
@@ -70,13 +84,13 @@ class PostServiceTests {
     void testCreatePost_SuccessfulPostCreationMissingDescription(){
         //Given
         PostRequest postRequest = new PostRequest();
-        /*com.vodafone.learningHub.openapi.model.Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");*/
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
 
         postRequest.setTitle("Test Title");
-        /*postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);*/
+        postRequest.setTag(tags);
 
         //when
         PostResponse postResponse = underTest.createPost(postRequest);
@@ -93,13 +107,13 @@ class PostServiceTests {
     void testCreatePost_FailureMissingTitle() {
         // Given
         PostRequest postRequest = new PostRequest();
-        /*Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add("Test Tag");*/
+        List<Tag> tags = new ArrayList<>();
+        Tag newTag = new Tag();
+        newTag.setTagName("Test Tag");
+        tags.add(newTag);
 
         postRequest.setDescription("Test Description");
-        /*postRequest.setTag(tags);
-        postRequest.setAttachment(attachment);*/
+        postRequest.setTag(tags);
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -137,14 +151,12 @@ class PostServiceTests {
     void testCreatePost_FailureNullTag() {
         // Given
         PostRequest postRequest = new PostRequest();
-        /*Attachment attachment = new Attachment();
-        List<String> tags = new ArrayList<>();
-        tags.add(null);*/
+        List<Tag> tags = new ArrayList<>();
+        tags.add(null);
 
         postRequest.setTitle("Test Title");
         postRequest.setDescription("Test Description");
-        /*postRequest.setAttachment(attachment);
-        postRequest.setTag(tags);*/
+        postRequest.setTag(tags);
 
         // When
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -207,7 +219,7 @@ class PostServiceTests {
 //    Successful Post Edit with No Changes (HTTP 202 Accepted)
 
     @Test
-    void testUpdatePost_SuccessfulPostEdit() {
+    void testUpdatePost_SuccessfulPostEdit() throws NotFoundException {
         // Given
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
@@ -222,7 +234,7 @@ class PostServiceTests {
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
-        String postId = initialPostResponse.getPostId();
+        int postId = initialPostResponse.getPostId();
 
         PostRequest updatedPostRequest = new PostRequest();
         updatedPostRequest.setTitle("Updated Title");
@@ -285,7 +297,7 @@ class PostServiceTests {
     }
 
     @Test
-    void testUpdatePost_NoChanges() {
+    void testUpdatePost_NoChanges() throws NotFoundException {
         // Given
         PostRequest initialPostRequest = new PostRequest();
         initialPostRequest.setTitle("Initial Title");
@@ -293,7 +305,7 @@ class PostServiceTests {
 
         PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
 
-        String postId = initialPostResponse.getPostId();
+        int postId = initialPostResponse.getPostId();
 
         // When
         // Attempt to update with no changes
