@@ -16,13 +16,13 @@ public class TagServiceImp {
 //        return tagRepository.findByTag(tag);
 //    }
 //
-//    public Boolean existsByTag(String tag) {
-//        return tagRepository.existsByTag(tag);
-//    }
+    public Boolean existsById(String tag) {
+        return tagRepository.existsByTag(tag);
+    }
 //
-//    public Tag saveTag(Tag tag) {
-//        return tagRepository.save(tag);
-//    }
+    public Tag saveTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
 //
 //    public void deleteAllTags() {
 //        tagRepository.deleteAll();
