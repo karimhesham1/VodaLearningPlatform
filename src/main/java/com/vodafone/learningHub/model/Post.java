@@ -20,7 +20,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
-    private int postId;
+    private Integer postId;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -49,23 +50,32 @@ public class PostServiceImpl implements PostServiceI{
         return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
 
+    @Transactional
     @Override
     public PostResponse updatePost(Integer postId,PostRequest postRequest) throws NotFoundException {
-        Post post=getPostById(postId);
+        Post post = getPostById(postId);
         if (!existsByPostId(postId)) {
             throw new NotFoundException("Post not found");
         }
 
         Post editedPost = PostMapper.INSTANCE.postRequestToPost(postRequest);
 
+        if(editedPost.getTitle() == null) {
+            throw new IllegalArgumentException("A post must have a title");
+        }
+
         if (editedPost.getTags() == null || editedPost.getTags().isEmpty()) {
             throw new IllegalArgumentException("A post must have at least one tag");
         }
 
+
+
         post.setTitle(editedPost.getTitle());
         post.setDescription(editedPost.getDescription());
         post.setTags(editedPost.getTags());
-        post.setAttachments(editedPost.getAttachments());
+
+        post.setAttachments(editedPost.getAttachments() != null?editedPost.getAttachments():post.getAttachments());
+
 
         Post postResponse= postRepository.save(post);
 
@@ -107,7 +117,7 @@ public class PostServiceImpl implements PostServiceI{
 //        return tagSet;
 //    }
 
-    public Post getPostById(int postId) {
+    public Post getPostById(Integer postId) {
         return postRepository.findByPostId(postId);
     }
 

@@ -10,6 +10,6 @@ public interface PostServiceI {
     public PostResponse createPost(PostRequest postRequest);
     public PostResponse updatePost(Integer postId,PostRequest postRequest) throws NotFoundException;
 
-    public Post getPostById(int postId);
+    public Post getPostById(Integer postId);
     
 }

@@ -261,6 +261,12 @@ class PostServiceTest {
             updatedPostRequest.setTitle("Updated Title");
             updatedPostRequest.setDescription("Updated Description");
 
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("updated Tag");
+            tags.add(newTag);
+            updatedPostRequest.setTag(tags);
+
 
             // When
             // Attempt to update a nonexistent post
@@ -299,7 +305,7 @@ class PostServiceTest {
             });
 
             // Then
-            String expectedErrorMessage = "Bad Request"; // Adjust to the actual error message
+            String expectedErrorMessage = "A post must have a title"; // Adjust to the actual error message
             String actualErrorMessage = exception.getMessage();
             Assertions.assertTrue(actualErrorMessage.contains(expectedErrorMessage));
         }
