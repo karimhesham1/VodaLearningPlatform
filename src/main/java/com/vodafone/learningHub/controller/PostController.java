@@ -28,18 +28,18 @@ public class PostController implements PostApi  {
 
 
     @Override
-    public ResponseEntity<PostResponse> uploadPost(PostRequest postRequest) {
+    public ResponseEntity uploadPost(PostRequest postRequest) {
         try {
             PostResponse postResponse  = postServiceI.createPost(postRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(postResponse);
 
         } catch(IllegalArgumentException ex) {
-//            return ResponseEntity.badRequest().body(ex.getMessage());
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
+//            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ex.getMessage());
 
         } catch (Exception ex) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//            throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
     }
 
