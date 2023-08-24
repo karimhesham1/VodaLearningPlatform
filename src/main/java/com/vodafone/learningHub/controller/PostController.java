@@ -18,6 +18,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -59,7 +60,13 @@ public class PostController implements PostApi {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
     }
+    @Override
+    public ResponseEntity  getPost (Map<String, String> params) {
+        ResponseEntity responseEntity = postServiceI.getPost(params);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseEntity);
 
 
+    }
 
-}
+    }
