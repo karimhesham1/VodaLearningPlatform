@@ -3,6 +3,7 @@ package com.vodafone.learningHub.controller;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vodafone.learningHub.model.Post;
 import com.vodafone.learningHub.openapi.PostApi;
+import com.vodafone.learningHub.openapi.model.InlineResponse202;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
 import com.vodafone.learningHub.service.PostServiceI;
@@ -57,6 +58,19 @@ public class PostController implements PostApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity deletePost(Integer postId) {
+        try {
+            postServiceI.deletePost(postId);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(new InlineResponse202().message("Deleted Successfully"));
+
+        } catch (NotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new InlineResponse202().message(ex.getMessage()));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new InlineResponse202().message(ex.getMessage()));
         }
     }
 

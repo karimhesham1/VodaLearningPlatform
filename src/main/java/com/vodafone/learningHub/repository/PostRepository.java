@@ -1,7 +1,7 @@
 package com.vodafone.learningHub.repository;
 
 import com.vodafone.learningHub.model.Post;
-import com.vodafone.learningHub.model.RecentlyDeletedPost;
+//import com.vodafone.learningHub.model.RecentlyDeletedPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

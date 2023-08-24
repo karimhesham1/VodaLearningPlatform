@@ -9,7 +9,7 @@ public interface PostServiceI {
 
     public PostResponse createPost(PostRequest postRequest);
     public PostResponse updatePost(Integer postId,PostRequest postRequest) throws NotFoundException;
-    public void  deletePost(Integer postId);
+    public void  deletePost(Integer postId) throws NotFoundException;
     public Post getPostById(Integer postId);
     
 }
