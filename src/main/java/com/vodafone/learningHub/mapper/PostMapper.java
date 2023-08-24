@@ -21,6 +21,7 @@ public interface PostMapper {
     PostResponse postToPostResponse(Post post);
     @Mapping(source = "tag", target = "tags", qualifiedByName = "tagListToSet")
     Post postRequestToPost(PostRequest postRequest);
+    Post postResponseToPost(PostResponse postResponse);
 
     @Named("tagSetToList")
     default List<com.vodafone.learningHub.openapi.model.Tag> tagSetToList(Set<Tag> tags) {

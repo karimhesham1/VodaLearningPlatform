@@ -12,6 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
@@ -96,15 +98,28 @@ public class PostServiceImpl implements PostServiceI{
         postRepository.save(post);
     }
 
-    @Scheduled(cron = "0 0 0 * * *") // Run daily at midnight
+//    @Scheduled(cron = "0 0 0 * * *") // Run daily at midnight
+//    @Transactional
+//    public void deleteOldPosts() {
+//        LocalDateTime threshold = LocalDateTime.now().minusDays(30);
+//
+//        List<Post> postsToDelete = postRepository.findByIsDeletedIsTrue();
+//
+//        List<Post> postsToDeleteFiltered = postsToDelete.stream()
+//                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(threshold))
+//                .collect(Collectors.toList());
+//
+//        postRepository.deleteAll(postsToDeleteFiltered);
+//    }
+
+    @Scheduled(cron = "0 * * * * *")
     @Transactional
     public void deleteOldPosts() {
-        LocalDateTime threshold = LocalDateTime.now().minusDays(30);
-
+        LocalDateTime now = LocalDateTime.now();
         List<Post> postsToDelete = postRepository.findByIsDeletedIsTrue();
 
         List<Post> postsToDeleteFiltered = postsToDelete.stream()
-                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(threshold))
+                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(now))
                 .collect(Collectors.toList());
 
         postRepository.deleteAll(postsToDeleteFiltered);
@@ -114,7 +129,7 @@ public class PostServiceImpl implements PostServiceI{
         return postRepository.findByPostId(postId);
     }
 
-    public Boolean existsByPostId(int postId) {
+    public Boolean existsByPostId(Integer postId) {
         return postRepository.existsByPostId(postId);
     }
 }
