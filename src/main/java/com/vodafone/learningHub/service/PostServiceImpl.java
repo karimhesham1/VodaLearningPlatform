@@ -8,13 +8,18 @@ import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.repository.PostRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.stream.Collectors;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@EnableScheduling
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostServiceI{
 
@@ -87,10 +92,23 @@ public class PostServiceImpl implements PostServiceI{
         }
 
         post.setDeleted(true);
-        post.setDeletedAt(LocalDateTime.now());
+        post.setDeletedAt(LocalDateTime.now().toString());
         postRepository.save(post);
     }
 
+    @Scheduled(cron = "0 0 0 * * *") // Run daily at midnight
+    @Transactional
+    public void deleteOldPosts() {
+        LocalDateTime threshold = LocalDateTime.now().minusDays(30);
+
+        List<Post> postsToDelete = postRepository.findByIsDeletedIsTrue();
+
+        List<Post> postsToDeleteFiltered = postsToDelete.stream()
+                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(threshold))
+                .collect(Collectors.toList());
+
+        postRepository.deleteAll(postsToDeleteFiltered);
+    }
 
     public Post getPostById(Integer postId) {
         return postRepository.findByPostId(postId);

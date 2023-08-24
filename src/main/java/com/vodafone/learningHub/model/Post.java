@@ -58,5 +58,5 @@ public class Post {
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
     @Column(name = "deleted_at")
-    private LocalDateTime deletedAt; // The date when the post was deleted
+    private String deletedAt; // The date when the post was deleted
 }
