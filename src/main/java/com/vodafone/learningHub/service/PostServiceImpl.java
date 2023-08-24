@@ -10,14 +10,13 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -85,40 +84,27 @@ public class PostServiceImpl implements PostServiceI{
         return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
 
-//@Override
-//public PostResponse updatePost(Integer postId,PostRequest postRequest) {
-//    Post post=getPostById(postId);
-////    Post editedPost = PostMapper.INSTANCE.postRequestToPost(postRequest);
-//
-//    if (postRequest.getTags() == null || postRequest.getTags().isEmpty()) {
-//        throw new IllegalArgumentException("A post must have at least one tag");
-//    }
-//
-//    post.setTitle(postRequest.getTitle());
-//    post.setDescription(postRequest.getDescription());
-//    post.setTags(postRequest.getTags());
-//    post.setAttachments(postRequest.getAttachments());
-//
-//
-//
-//
-//    Post postResponse= postRepository.save(post);
-//
-//    return PostMapper.INSTANCE.postToPostResponse(postResponse);
-//}
-//
-//    private Set<Tag> tagListToSet(List<com.vodafone.learningHub.openapi.model.Tag> tags) {
-//        if (tags == null || tags.isEmpty()) {
-//            return new HashSet<>();
-//        }
-//        Set<Tag> tagSet = new HashSet<>();
-//        for (com.vodafone.learningHub.openapi.model.Tag tag : tags) {
-//            Tag newTag = new Tag();
-//            newTag.setTag(tag.getTagName());
-//            tagSet.add(newTag);
-//        }
-//        return tagSet;
-//    }
+//    @Override
+    public ResponseEntity getPost(Map<String, String> params){
+        String title = params.get("title");
+        String tagsParam = params.get("tag");
+
+        List<Post> filteredPosts;
+
+        if(title != null && tagsParam != null){
+            Set<String> tags = new HashSet<>(Arrays.asList(tagsParam.split(",")));
+            filteredPosts = postRepository.findByTitleAndTags(title, tags);
+        } else if(title != null){
+            filteredPosts = postRepository.findByTitle(title);
+        } else if(tagsParam != null){
+            Set<String> tags = new HashSet<>(Arrays.asList(tagsParam.split(",")));
+            filteredPosts = postRepository.findByTags(tags);
+        } else {
+            filteredPosts = postRepository.findAll();
+        }
+//        return ResponseEntity.ok(PostMapper.INSTANCE.postListToPostResponseList(filteredPosts));
+        return null;
+    }
 
     public Post getPostById(Integer postId) {
         return postRepository.findByPostId(postId);

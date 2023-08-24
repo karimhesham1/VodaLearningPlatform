@@ -82,6 +82,45 @@ paths:
                   message:
                     type: string
                     example: Bad Request
+
+  /getPost:
+    get:
+      description: update a post as a user
+      operationId: getPost
+      tags:
+        - Post
+      summary: Get items using a Map object as a query parameter
+      parameters:
+        - name: filters
+          in: query
+          description: Key-value pairs to filter items
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Found
+        '402':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not Found
+
+
 components:
   schemas:
     PostRequest:
