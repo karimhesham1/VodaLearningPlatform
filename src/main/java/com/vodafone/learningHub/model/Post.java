@@ -22,6 +22,22 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
     private Integer postId;
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", attachments=" + attachments +
+                ", tags=" + tags +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;

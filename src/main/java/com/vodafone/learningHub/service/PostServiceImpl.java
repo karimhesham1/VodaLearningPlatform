@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -80,10 +81,11 @@ public class PostServiceImpl implements PostServiceI{
     @Override
     @Transactional
     public void deletePost(Integer postId) throws NotFoundException {
-        if( (!existsByPostId(postId)) || ( getPostById(postId).isDeleted() ) ){
-            throw new NotFoundException("Post not found");
+        Post post = postRepository.findById(postId).orElseThrow(()-> new NotFoundException("Post not found"));
+        if(post.isDeleted()){
+            throw new NotFoundException("Post id already deleted");
         }
-        Post post = getPostById(postId);
+
         post.setDeleted(true);
         post.setDeletedAt(LocalDateTime.now());
         postRepository.save(post);
