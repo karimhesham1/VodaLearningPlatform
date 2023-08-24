@@ -61,7 +61,7 @@ public class PostController implements PostApi {
         }
     }
     @Override
-    public ResponseEntity  getPost (Map<String, String> params) {
+    public ResponseEntity getPost (Map<String, String> params) {
         ResponseEntity responseEntity = postServiceI.getPost(params);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseEntity);

@@ -36,6 +36,39 @@ paths:
                   message:
                     type: string
                     example: Invalid
+
+    get:
+      description: update a post as a user
+      operationId: getPost
+      tags:
+        - Post
+      summary: Get items using a Map object as a query parameter
+      parameters:
+        - name: filters
+          in: query
+          description: Key-value pairs to filter items
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsList'
+        '402':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Post Not Found
+
   /post/{postId}:
     put:
       description: update a post as a user
@@ -83,42 +116,7 @@ paths:
                     type: string
                     example: Bad Request
 
-  /getPost:
-    get:
-      description: update a post as a user
-      operationId: getPost
-      tags:
-        - Post
-      summary: Get items using a Map object as a query parameter
-      parameters:
-        - name: filters
-          in: query
-          description: Key-value pairs to filter items
-          schema:
-            type: object
-            additionalProperties:
-              type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Found
-        '402':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Not Found
+
 
 
 components:
@@ -169,3 +167,10 @@ components:
       properties:
         tagName:
           type: string
+    PostsList:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostResponse'

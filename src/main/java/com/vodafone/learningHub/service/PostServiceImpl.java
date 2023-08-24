@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostServiceI{
         return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
 
-//    @Override
+    @Override
     public ResponseEntity getPost(Map<String, String> params){
         String title = params.get("title");
         String tagsParam = params.get("tag");
@@ -102,8 +102,8 @@ public class PostServiceImpl implements PostServiceI{
         } else {
             filteredPosts = postRepository.findAll();
         }
-//        return ResponseEntity.ok(PostMapper.INSTANCE.postListToPostResponseList(filteredPosts));
-        return null;
+        return ResponseEntity.ok(filteredPosts);
+//        return null;
     }
 
     public Post getPostById(Integer postId) {
