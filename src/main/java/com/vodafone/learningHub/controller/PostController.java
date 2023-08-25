@@ -66,6 +66,7 @@ public class PostController implements PostApi {
         ResponseEntity responseEntity = postServiceI.getPost(params);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseEntity);
+    }
 
     @Override
     public ResponseEntity deletePost(Integer postId) {
@@ -79,8 +80,4 @@ public class PostController implements PostApi {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new InlineResponse202().message(ex.getMessage()));
         }
     }
-
-
-    }
-
-    }
+}
