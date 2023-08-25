@@ -1,6 +1,6 @@
 # Vodafone Learn Documentation
 
-![Vodafone Learn Logo](https://i.imgur.com/Dt0SD0m.png)
+![Vodafone Learn Logo](https://github.com/karimhesham1/VodaLearningPlatform/blob/master/img/Vodafone-Learn-Logo.png)
 
 ---
 

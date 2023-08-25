@@ -14,6 +14,8 @@ public interface PostServiceI {
     public PostResponse updatePost(Integer postId,PostRequest postRequest) throws NotFoundException;
     public ResponseEntity getPost(Map<String, String> params);
 
+    public void  deletePost(Integer postId) throws NotFoundException;
     public Post getPostById(Integer postId);
-    
+    public Boolean existsByPostId(Integer postId);
+
 }

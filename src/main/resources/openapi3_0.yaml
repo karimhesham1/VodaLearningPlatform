@@ -95,16 +95,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostResponse'
-        '404':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Not Found
         '400':
           description: Bad Request
           content:
@@ -115,10 +105,50 @@ paths:
                   message:
                     type: string
                     example: Bad Request
-
-
-
-
+        '404':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not Found
+    delete:
+      summary: Delete a post as a user
+      description: ''
+      operationId: deletePost
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Deleted Successfully
+        '404':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Not Found
+      tags:
+        - Post
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          description: id of the post to be deleted
+          schema:
+            type: integer
 components:
   schemas:
     PostRequest:
