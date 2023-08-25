@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 
@@ -21,6 +22,22 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "post_id")
     private Integer postId;
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", rating=" + rating +
+                ", attachments=" + attachments +
+                ", tags=" + tags +
+                ", isDeleted=" + isDeleted +
+                ", deletedAt=" + deletedAt +
+                '}';
+    }
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
@@ -38,4 +55,8 @@ public class Post {
     @JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag"))
     private Set<Tag> tags;
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+    @Column(name = "deleted_at")
+    private String deletedAt; // The date when the post was deleted
 }
