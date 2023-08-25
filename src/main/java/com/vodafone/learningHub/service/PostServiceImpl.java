@@ -8,18 +8,20 @@ import com.vodafone.learningHub.openapi.model.Tag;
 import com.vodafone.learningHub.repository.PostRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.stream.Collectors;
+
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
+@EnableScheduling
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostServiceI{
 
@@ -71,60 +73,63 @@ public class PostServiceImpl implements PostServiceI{
             throw new IllegalArgumentException("A post must have at least one tag");
         }
 
-
-
         post.setTitle(editedPost.getTitle());
         post.setDescription(editedPost.getDescription());
         post.setTags(editedPost.getTags());
 
         post.setAttachments(editedPost.getAttachments() != null?editedPost.getAttachments():post.getAttachments());
 
-
         Post postResponse= postRepository.save(post);
 
         return PostMapper.INSTANCE.postToPostResponse(postResponse);
     }
 
-//@Override
-//public PostResponse updatePost(Integer postId,PostRequest postRequest) {
-//    Post post=getPostById(postId);
-////    Post editedPost = PostMapper.INSTANCE.postRequestToPost(postRequest);
+
+    @Override
+    @Transactional
+    public void deletePost(Integer postId) throws NotFoundException {
+        Post post = postRepository.findById(postId).orElseThrow(()-> new NotFoundException("Post not found"));
+        if(post.isDeleted()){
+            throw new NotFoundException("Post id already deleted");
+        }
+
+        post.setDeleted(true);
+        post.setDeletedAt(LocalDateTime.now().toString());
+        postRepository.save(post);
+    }
+
+//    @Scheduled(cron = "0 0 0 * * *") // Run daily at midnight
+//    @Transactional
+//    public void deleteOldPosts() {
+//        LocalDateTime threshold = LocalDateTime.now().minusDays(30);
 //
-//    if (postRequest.getTags() == null || postRequest.getTags().isEmpty()) {
-//        throw new IllegalArgumentException("A post must have at least one tag");
+//        List<Post> postsToDelete = postRepository.findByIsDeletedIsTrue();
+//
+//        List<Post> postsToDeleteFiltered = postsToDelete.stream()
+//                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(threshold))
+//                .collect(Collectors.toList());
+//
+//        postRepository.deleteAll(postsToDeleteFiltered);
 //    }
-//
-//    post.setTitle(postRequest.getTitle());
-//    post.setDescription(postRequest.getDescription());
-//    post.setTags(postRequest.getTags());
-//    post.setAttachments(postRequest.getAttachments());
-//
-//
-//
-//
-//    Post postResponse= postRepository.save(post);
-//
-//    return PostMapper.INSTANCE.postToPostResponse(postResponse);
-//}
-//
-//    private Set<Tag> tagListToSet(List<com.vodafone.learningHub.openapi.model.Tag> tags) {
-//        if (tags == null || tags.isEmpty()) {
-//            return new HashSet<>();
-//        }
-//        Set<Tag> tagSet = new HashSet<>();
-//        for (com.vodafone.learningHub.openapi.model.Tag tag : tags) {
-//            Tag newTag = new Tag();
-//            newTag.setTag(tag.getTagName());
-//            tagSet.add(newTag);
-//        }
-//        return tagSet;
-//    }
+
+    @Scheduled(cron = "0 * * * * *")
+    @Transactional
+    public void deleteOldPosts() {
+        LocalDateTime now = LocalDateTime.now();
+        List<Post> postsToDelete = postRepository.findByIsDeletedIsTrue();
+
+        List<Post> postsToDeleteFiltered = postsToDelete.stream()
+                .filter(post -> LocalDateTime.parse(post.getDeletedAt()).isBefore(now))
+                .collect(Collectors.toList());
+
+        postRepository.deleteAll(postsToDeleteFiltered);
+    }
 
     public Post getPostById(Integer postId) {
         return postRepository.findByPostId(postId);
     }
 
-    public Boolean existsByPostId(int postId) {
+    public Boolean existsByPostId(Integer postId) {
         return postRepository.existsByPostId(postId);
     }
 }

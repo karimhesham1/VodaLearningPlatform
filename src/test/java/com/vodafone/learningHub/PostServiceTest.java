@@ -336,4 +336,76 @@ class PostServiceTest {
             assertThat(updatedPostResponse).isEqualTo(initialPostResponse);
         }
     }
+
+    @Nested
+    class TestDeletePost {
+        PostResponse initialPostResponse;
+        @BeforeEach
+        void setUp(){
+            PostRequest initialPostRequest = new PostRequest();
+            initialPostRequest.setTitle("Initial Title");
+            initialPostRequest.setDescription("Initial Description");
+
+            List<Tag> tags = new ArrayList<>();
+            Tag newTag = new Tag();
+            newTag.setTagName("Test Tag");
+            tags.add(newTag);
+            initialPostRequest.setTag(tags);
+
+            initialPostResponse  = underTest.createPost(initialPostRequest);
+
+        }
+
+        @Test
+        void testDeletePost_SuccessfulPostDeletion() throws NotFoundException {
+            // Given
+            Integer postId = initialPostResponse.getPostId();
+
+            // When
+            underTest.deletePost(postId);
+            Post post = underTest.getPostById(postId);
+
+            // Then
+//            try{
+//                Thread.sleep(62_000);
+//                assertThat(underTest.existsByPostId(postId)).isEqualTo(false);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//                System.err.println("Thread interrupted while waiting: " + e.getMessage());
+//            }
+            assertThat(post.isDeleted()).isEqualTo(true);
+        }
+
+        @Test
+        void testDeletePost_NonexistentPost() {
+            // Given
+            int nonexistentPostId = 999999;
+
+            // When
+            // Attempt to delete a nonexistent post
+            NotFoundException exception = Assertions.assertThrows(NotFoundException.class, () -> {
+                underTest.deletePost(nonexistentPostId);
+            });
+
+            // Then
+            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+        }
+
+        @Test
+        void testDeletePost_AlreadyDeletedPost() throws NotFoundException {
+            // Given
+            int postId = initialPostResponse.getPostId();
+
+            // When
+            underTest.deletePost(postId);
+            Post post = underTest.getPostById(postId);
+
+            // Then
+            assertThat(post.isDeleted()).isEqualTo(true);
+            NotFoundException exception = Assertions.assertThrows(NotFoundException.class, () -> {
+                underTest.deletePost(postId);
+            });
+            assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+        }
+    }
 }
