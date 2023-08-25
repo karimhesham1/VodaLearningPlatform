@@ -64,9 +64,9 @@ public class PostServiceImpl implements PostServiceI{
     @Transactional
     @Override
     public PostResponse updatePost(Integer postId,PostRequest postRequest) throws NotFoundException {
-        Post post = getPostById(postId);
-        if (!existsByPostId(postId)) {
-            throw new NotFoundException("Post not found");
+        Post post = postRepository.findById(postId).orElseThrow(()-> new NotFoundException("Post not found"));
+        if(post.isDeleted()){
+            throw new NotFoundException("Post is already deleted");
         }
 
         Post editedPost = PostMapper.INSTANCE.postRequestToPost(postRequest);
@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostServiceI{
     public void deletePost(Integer postId) throws NotFoundException {
         Post post = postRepository.findById(postId).orElseThrow(()-> new NotFoundException("Post not found"));
         if(post.isDeleted()){
-            throw new NotFoundException("Post id already deleted");
+            throw new NotFoundException("Post is already deleted");
         }
 
         post.setDeleted(true);
@@ -152,7 +152,6 @@ public class PostServiceImpl implements PostServiceI{
             filteredPosts = postRepository.findAll();
         }
         return ResponseEntity.ok(filteredPosts);
-//        return null;
     }
 
     public Post getPostById(Integer postId) {

@@ -4,7 +4,9 @@ import com.vodafone.learningHub.mapper.PostMapper;
 import com.vodafone.learningHub.model.Post;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
+import com.vodafone.learningHub.openapi.model.PostsList;
 import com.vodafone.learningHub.openapi.model.Tag;
+import com.vodafone.learningHub.repository.PostRepository;
 import com.vodafone.learningHub.service.PostServiceI;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -16,11 +18,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.naming.ServiceUnavailableException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -406,6 +411,29 @@ class PostServiceTest {
                 underTest.deletePost(postId);
             });
             assertThat(exception.getClass()).isEqualTo(NotFoundException.class);
+        }
+    }
+
+    @Nested
+    class TestGetPost {
+        PostRepository postRepository;
+
+        @BeforeEach
+        void setUp() {
+            //populate the database with some posts with a loop
+            for (int i = 0; i < 10; i++) {
+                PostRequest initialPostRequest = new PostRequest();
+                initialPostRequest.setTitle("Initial Title " + i);
+                initialPostRequest.setDescription("Initial Description");
+
+                List<Tag> tags = new ArrayList<>();
+                Tag newTag = new Tag();
+                newTag.setTagName("Test Tag " + i);
+                tags.add(newTag);
+                initialPostRequest.setTag(tags);
+
+                PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+            }
         }
     }
 }
