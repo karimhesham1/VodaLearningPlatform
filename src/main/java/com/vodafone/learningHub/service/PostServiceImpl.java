@@ -96,6 +96,7 @@ public class PostServiceImpl implements PostServiceI{
 
     @Override
     @Transactional
+    
     public void deletePost(Integer postId) throws NotFoundException {
         Post post = postRepository.findById(postId).orElseThrow(()-> new NotFoundException("Post not found"));
         if(post.isDeleted()){

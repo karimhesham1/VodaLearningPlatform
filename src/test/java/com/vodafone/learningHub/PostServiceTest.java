@@ -1,6 +1,5 @@
 package com.vodafone.learningHub;
 
-import com.vodafone.learningHub.mapper.PostMapper;
 import com.vodafone.learningHub.model.Post;
 import com.vodafone.learningHub.openapi.model.PostRequest;
 import com.vodafone.learningHub.openapi.model.PostResponse;
@@ -13,18 +12,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.naming.ServiceUnavailableException;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
@@ -417,6 +407,7 @@ class PostServiceTest {
     @Nested
     class TestGetPost {
         PostRepository postRepository;
+        PostsList initialPostsList;
 
         @BeforeEach
         void setUp() {
@@ -433,7 +424,13 @@ class PostServiceTest {
                 initialPostRequest.setTag(tags);
 
                 PostResponse initialPostResponse = underTest.createPost(initialPostRequest);
+                initialPostsList.addPostsItem(initialPostResponse);
             }
+
+        }
+
+        void testGetPost_SuccessfulReadPost() {
+
         }
     }
 }
